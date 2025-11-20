@@ -53,18 +53,17 @@ O projeto segue um fluxo automatizado dividido em estágios:
 
 ### 1. Governança e Qualidade (SonarQube)
 *Visibilidade total da saúde do código. O Quality Gate "Passed" garante que apenas código limpo avance.*
+<img width="1348" height="661" alt="image" src="https://github.com/user-attachments/assets/c85543dc-8005-47b3-9de6-daea65611545" />
 
-![SonarQube Dashboard](https://via.placeholder.com/800x400?text=Print+do+SonarQube+Verde)
 
 ### 2. GitOps em Ação (ArgoCD)
 *Escabilidade declarativa: Aplicação escalada para 3 réplicas apenas editando o Git, sem comandos manuais.*
+<img width="1008" height="560" alt="image" src="https://github.com/user-attachments/assets/2e91ef74-f663-4e52-9d1e-f35b3b2d6616" />
 
-![ArgoCD Dashboard](https://via.placeholder.com/800x400?text=Print+do+ArgoCD)
 
 ### 3. Infraestrutura (Kubernetes)
 *Todos os serviços (Jenkins, Sonar, Argo, App) rodando em containers no namespace `devops-tools`.*
-
-![Terminal Kubernetes](https://via.placeholder.com/800x400?text=Print+do+Terminal+Kubectl)
+<img width="916" height="490" alt="image" src="https://github.com/user-attachments/assets/a73903aa-26a0-4cf9-9716-bdc833fb7bcc" />
 
 ---
 

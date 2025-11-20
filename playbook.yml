@@ -1,0 +1,19 @@
+- name: Configurar Cluster Kubernetes Base
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Instalar dependências Python para K8s (caso falte)
+      pip:
+        name: kubernetes
+        state: present
+      # Nota: Pode requerer sudo ou venv, dependendo do seu setup. 
+      # Se der erro, instale 'pip install kubernetes' manualmente no terminal.
+
+    - name: Criar Namespace 'devops-tools'
+      kubernetes.core.k8s:
+        name: devops-tools
+        api_version: v1
+        kind: Namespace
+        state: present
+        context: kind-lab-devops  # Garante que está falando com o cluster certo

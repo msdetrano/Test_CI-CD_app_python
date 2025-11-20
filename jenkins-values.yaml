@@ -1,0 +1,38 @@
+# k8s/helm/jenkins-values.yaml - VERSÃO SEM PLUGINS (PARA DESTRAVAR)
+
+controller:
+  image:
+    tag: "lts"
+  
+  serviceType: ClusterIP
+  
+  # --- REMOVIDO O BLOCO installPlugins PARA EVITAR ERROS DE DOWNLOAD ---
+
+  # Recursos (CPU/Memória)
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1536Mi"
+  
+  # Opções do Java
+  javaOpts: "-Xmx1024m -Xms512m"
+
+persistence:
+  enabled: false
+
+agent:
+  enabled: true
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+rbac:
+  create: true
+  readSecrets: true

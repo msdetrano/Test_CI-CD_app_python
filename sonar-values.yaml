@@ -1,0 +1,72 @@
+# --- CONFIGURAÇÃO SONARQUBE PARA LAB (KIND/DOCKER) ---
+
+# 1. Define explicitamente a edição Community (Gratuita)
+community:
+  enabled: true
+
+# 2. Imagem LTS (Long Term Support) - Mais estável
+image:
+  tag: 9.9-community
+
+# 3. Senha de monitoramento exigida pelas novas versões
+monitoringPasscode: "lab_monitor_123"
+
+# 4. Tipo de Serviço (ClusterIP é o padrão seguro interno)
+service:
+  type: ClusterIP
+
+# 5. Configurações do Elasticsearch (Evita erros de bootstrap em single-node)
+elasticsearch:
+  configureNode: false
+  bootstrapChecks:
+    enabled: false
+
+# 6. Desativa persistência para o Lab ficar leve (reiniciou, limpou)
+persistence:
+  enabled: false
+
+# 7. Banco de Dados PostgreSQL (Container leve, sem persistência)
+postgresql:
+  enabled: true
+  postgresqlUsername: sonar
+  postgresqlPassword: sonar
+  postgresqlDatabase: sonar
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 512Mi
+      cpu: 1000m
+
+# 8. TUNAGEM DE MEMÓRIA (CRUCIAL PARA NÃO DAR OOM)
+# Limitamos o HEAP do Java para caber dentro do limite do Container.
+env:
+  - name: SONAR_WEB_JAVAOPTS
+    value: "-Xmx1G -Xms512m -XX:+HeapDumpOnOutOfMemoryError"
+  - name: SONAR_CE_JAVAOPTS
+    value: "-Xmx512m -Xms256m -XX:+HeapDumpOnOutOfMemoryError"
+
+resources:
+  requests:
+    memory: 1.5Gi
+    cpu: 500m
+  limits:
+    memory: 3Gi  # Garante que o container tenha teto para o Java + Sistema
+    cpu: 1000m
+
+# 9. Aumenta o tempo de espera (Timeout) pois o Java demora a subir
+livenessProbe:
+  initialDelaySeconds: 180 # Espera 3 min antes de checar
+  periodSeconds: 30
+  failureThreshold: 6
+
+readinessProbe:
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  failureThreshold: 6
+
+# NOTA: A seção 'account' foi removida propositalmente para evitar
+# que o Helm crie o Job de troca de senha que estava travando seu deploy.
